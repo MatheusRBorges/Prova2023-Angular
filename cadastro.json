@@ -1,0 +1,11 @@
+{
+  "cadastro":[
+    {
+      "id": 1,
+      "name": "TesteEmpresa",
+      "email": "testempresa@gmail.com",
+      "number":123,
+      "regiao": "SP"
+    }
+  ]
+}
