@@ -16,11 +16,11 @@ export class CadastroService {
   salvar(cadastro: Cadastro): Observable<Cadastro>{
     return this.http.post<Cadastro>(this.url, cadastro);
 }
-  remover(cadastro: Cadastro): Observable<void>{
-    return this.http.delete<void>(`${this.url}/${cadastro.id}`);
-}
   update(cadastro: Cadastro): Observable<Cadastro>{
     return this.http.put<Cadastro>(`${this.url}/${cadastro.id}`,cadastro);
+}
+remover(cadastro: Cadastro): Observable<void>{
+  return this.http.delete<void>(`${this.url}/${cadastro.id}`);
 }
 
 }
