@@ -10,8 +10,7 @@ import { CadastroService } from '../cadastro.service';
 })
 export class CadastroComponent implements OnInit {
 
-
-  cadastro: Cadastro = [];
+  cadastros: Cadastro[] = [];
 
   formGroupCadastro : FormGroup;
 
@@ -20,7 +19,6 @@ export class CadastroComponent implements OnInit {
   constructor(
     private cadastroService: CadastroService,
     private formBuilder: FormBuilder
-
     ){
 
       this.formGroupCadastro = formBuilder.group({
@@ -33,15 +31,51 @@ export class CadastroComponent implements OnInit {
 }
 
 ngOnInit(): void {
-    this.loadCadastro();
+  this.loadCadastro();
 }
+
 loadCadastro(){
   this.cadastroService.getCadastro().subscribe({
-    next: (data) => (this.cadastro = data), //next pega os clientes
+    next: (data) => (this.cadastros = data), //next pega os clientes
+    error: (error) => console.log('Error ao chamar o endpoint' + error),
   });
 }
+
+salvar() {
+  if (this.isEditing) {
+    this.isEditing = false;
+
+    this.cadastroService.update(this.formGroupCadastro.value).subscribe({
+      next: () => {
+        this.loadCadastro();
+
+        this.formGroupCadastro.reset();
+      },
+    });
+  } else {
+    this.cadastroService.salvar(this.formGroupCadastro.value).subscribe({
+      next: (data) => {
+        this.cadastros.push(data);
+
+        this.formGroupCadastro.reset();
+      },
+    });
+  }
 }
 
+remove(Cadastro:Cadastro): void {
+  this.cadastroService.remover(Cadastro).subscribe({
+    next: () => {
+      this.cadastros.splice(this.cadastros.indexOf(Cadastro), 1);
+    },
+  }); // this.ClientService.removeClient(client).subscribe({ // forma mais facil de entender //   next: () => this.loadClients() // });
+}
 
+edit(cadastro:Cadastro): void {
+  this.formGroupCadastro.setValue(cadastro);
 
+  this.isEditing = true;
+}
+
+}
 

@@ -2,6 +2,6 @@ export interface Cadastro {
   id : number,
   name : string,
   email : string,
-  number : number,
+  phone : number,
   regiao : string,
 }
